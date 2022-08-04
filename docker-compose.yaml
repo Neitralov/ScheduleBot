@@ -1,0 +1,21 @@
+services:
+  db:
+    container_name: db
+    image: postgres:14.4
+    env_file:
+      - .env
+    volumes:
+      - ./ScheduleBot/PostgresData/:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  schedulebot:
+    container_name: schedulebot
+    build: .
+    depends_on: 
+      - db
+    env_file:
+      - .env
+    volumes:
+      - ./ScheduleBot/Data:/app/Data
+      - ./ScheduleBot/Logs:/app/Logs
