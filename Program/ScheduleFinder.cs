@@ -31,7 +31,7 @@ public static class ScheduleFinder
         }
     }
 
-    /// <summary>Проверяет наличие копии расписания для всех корпусов.</summary>
+    /// <summary>Проверяет наличие сохраненной копии расписания для всех корпусов.</summary>
     private static void CheckForCachedScheduleForAllCorps()
     {
         var tasks = new[]
@@ -46,13 +46,16 @@ public static class ScheduleFinder
             task.Wait();
     }
 
-    /// <summary>Проверяет наличие хотя бы одной копии расписания.</summary>
+    /// <summary>Проверяет наличие сохраненной копии расписания.</summary>
     /// <param name="corps">Корпус у которого проверяется кэшировнное расписание.</param>
+    /// <exception cref="Exception">Невозможно скачать файл расписания с сайта.</exception>
     private static async Task CheckForCachedScheduleAsync(Corps corps)
     {
         if (File.Exists(GetOldTablePath(corps)) == false)
         {
-            await LoadScheduleAsync(corps);
+            if (!await TryLoadScheduleAsync(corps))
+                throw new Exception("Не удалось скачать расписание с сайта");
+            
             File.Move(GetNewTablePath(corps), GetOldTablePath(corps));
             await GetSchedulePictureAsync(corps);
         }
@@ -78,18 +81,20 @@ public static class ScheduleFinder
     /// <param name="corps">Корпус у которого проверяется обновление расписания.</param>
     private static async Task ScheduleSearchAsync(Corps corps)
     {
-        await LoadScheduleAsync(corps);
-
+        if (!await TryLoadScheduleAsync(corps))
+            return;
+        
         if (IsNewSchedule(corps))
         {
             await GetSchedulePictureAsync(corps);
             await Notifier.NotifySubscribersAsync(corps);
         }
     }
-
-    /// <summary>Скачивает расписание корпуса.</summary>
+    
+    /// <summary>Пробует скачать расписание корпуса.</summary>
     /// <param name="corps">Корпус, раписание которого скачивается.</param>
-    private static async Task LoadScheduleAsync(Corps corps)
+    /// <returns>true - раписание было скачано. false - скачать расписание не удалось.</returns>
+    private static async Task<bool> TryLoadScheduleAsync(Corps corps)
     {
         Directory.CreateDirectory(CurrentDirectory + "/Data");
         using var httpClient = new HttpClient();
@@ -102,8 +107,10 @@ public static class ScheduleFinder
         catch
         {
             Log.Error("Не удается скачать расписание с сайта.");
-            File.Copy(GetOldTablePath(corps), GetNewTablePath(corps));
+            return false;
         }
+
+        return true;
     }
 
     /// <summary>Проверяет является ли последнее скачанное расписание новым.</summary>
