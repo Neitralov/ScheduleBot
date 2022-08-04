@@ -2,3 +2,5 @@
 ScheduleBot/
 .idea
 obj/
+/ScheduleBot.csproj.DotSettings
+.env
