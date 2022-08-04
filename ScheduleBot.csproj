@@ -27,9 +27,4 @@
         <Using Include="CloudConvert.API.Models.TaskOperations" />
         <Using Include="NLog" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="ScheduleBot\Logs" />
-    </ItemGroup>
-
 </Project>
