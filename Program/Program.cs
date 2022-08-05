@@ -21,7 +21,7 @@ public static class Program
 
     public static void Main()
     {
-        InitNLogAsync();
+        InitNLog();
 
         var tasks = new[]
         {
@@ -34,7 +34,7 @@ public static class Program
     }
 
     /// <summary>Устанавливает настройки конфигурации для логгера.</summary>
-    private static void InitNLogAsync()
+    private static void InitNLog()
     {
         LogManager.Setup().LoadConfiguration(builder =>
         {
