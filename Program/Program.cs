@@ -29,8 +29,7 @@ public static class Program
             ScheduleFinder.ScheduleSearchAsync(new HoursRange(10, 22))
         };
 
-        foreach (var task in tasks)
-            task.Wait();
+        Task.WaitAll(tasks);
     }
 
     /// <summary>Устанавливает настройки конфигурации для логгера.</summary>

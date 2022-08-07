@@ -42,8 +42,7 @@ public static class ScheduleFinder
             CheckForCachedScheduleAsync(Corps.Fourth)
         };
 
-        foreach (var task in tasks)
-            task.Wait();
+        Task.WaitAll(tasks);
     }
 
     /// <summary>Проверяет наличие сохраненной копии расписания.</summary>
@@ -73,8 +72,7 @@ public static class ScheduleFinder
             ScheduleSearchAsync(Corps.Fourth)
         };
 
-        foreach (var task in tasks)
-            task.Wait();
+        Task.WaitAll(tasks);
     }
 
     /// <summary>Проверяет наличие обновления расписания.</summary>
