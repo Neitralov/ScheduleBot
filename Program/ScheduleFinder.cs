@@ -20,19 +20,19 @@ public static class ScheduleFinder
     /// <param name="searchTime">Промежуток времени, в течение которого работает метод.</param>
     public static async Task ScheduleSearchAsync(HoursRange searchTime)
     {
-        CheckForCachedScheduleForAllCorps();
+        await CheckForCachedScheduleForAllCorps();
 
         while (true)
         {
             if (searchTime == DateTime.Now.Hour)
-                CheckScheduleAvailabilityForAllCorps();
+                await CheckScheduleAvailabilityForAllCorps();
 
             await Task.Delay(120000);
         }
     }
 
     /// <summary>Проверяет наличие сохраненной копии расписания для всех корпусов.</summary>
-    private static void CheckForCachedScheduleForAllCorps()
+    private static async Task CheckForCachedScheduleForAllCorps()
     {
         var tasks = new[]
         {
@@ -41,8 +41,8 @@ public static class ScheduleFinder
             CheckForCachedScheduleAsync(Corps.Third),
             CheckForCachedScheduleAsync(Corps.Fourth)
         };
-
-        Task.WaitAll(tasks);
+        
+        await Task.WhenAll(tasks);
     }
 
     /// <summary>Проверяет наличие сохраненной копии расписания.</summary>
@@ -62,7 +62,7 @@ public static class ScheduleFinder
 
     /// <summary>Проверяет наличие обновления расписания для всех корпусов.</summary>
     /// <remarks>Нельзя выполнять проверку обновления расписания, не имея копий последнего расписания для корпусов.</remarks>
-    private static void CheckScheduleAvailabilityForAllCorps()
+    private static async Task CheckScheduleAvailabilityForAllCorps()
     {
         var tasks = new[]
         {
@@ -72,7 +72,7 @@ public static class ScheduleFinder
             ScheduleSearchAsync(Corps.Fourth)
         };
 
-        Task.WaitAll(tasks);
+        await Task.WhenAll(tasks);
     }
 
     /// <summary>Проверяет наличие обновления расписания.</summary>

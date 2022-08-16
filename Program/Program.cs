@@ -19,7 +19,7 @@ public static class Program
 
     public static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-    public static void Main()
+    public static async Task Main()
     {
         InitNLog();
 
@@ -29,7 +29,7 @@ public static class Program
             ScheduleFinder.ScheduleSearchAsync(new HoursRange(10, 22))
         };
 
-        Task.WaitAll(tasks);
+        await Task.WhenAll(tasks);
     }
 
     /// <summary>Устанавливает настройки конфигурации для логгера.</summary>
