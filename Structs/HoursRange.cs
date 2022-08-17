@@ -1,15 +1,26 @@
 ﻿namespace ScheduleBot.Structs;
 
-/// <summary>Представляет промежуток времени, указанный в часах.</summary>
+/// <summary>Представляет промежуток времени, указанный в часах от 0 до 23.</summary>
+/// <exception cref="ArgumentException">Start не может быть больше end.</exception>
+/// <exception cref="ArgumentException">Start не может быть большее 23.</exception>
+/// <exception cref="ArgumentException">End не может быть большее 23.</exception>
 public readonly struct HoursRange
 {
-    private readonly int _start;
-    private readonly int _end;
+    private readonly uint _start;
+    private readonly uint _end;
     
-    public HoursRange(int start, int end)
+    public HoursRange(uint start, uint end)
     {
-        _start = start;
-        _end = end;
+        _start = start <= 23
+            ? start
+            : throw new ArgumentException("Параметр start не может быть большее 23");
+
+        _end = end <= 23 
+            ? end
+            : throw new ArgumentException("Параметр end не может быть большее 23");
+        
+        if (start > end)
+            throw new ArgumentException("Параметр start не может быть больше параметра end");
     }
 
     private bool Equals(HoursRange other)
