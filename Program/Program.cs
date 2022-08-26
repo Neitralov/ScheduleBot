@@ -1,5 +1,6 @@
 ﻿using ScheduleBot.Structs;
 using static System.Environment;
+using static ScheduleBot.EnvironmentExtension;
 
 namespace ScheduleBot;
 
@@ -7,12 +8,12 @@ public static class Program
 {
     private static readonly string BotClientApiToken =
         GetEnvironmentVariable("BOT_API_TOKEN") ?? 
-        throw new InvalidOperationException("Указан несуществующий токен");
+        throw new InvalidOperationException("Переменная окружения не указана");
 
     private static readonly string CloudConvertApiToken =
         GetEnvironmentVariable("CLOUD_CONVERT_API_TOKEN") ??
-        throw new InvalidOperationException("Указан несуществующий токен");
-
+        throw new InvalidOperationException("Переменная окружения не указана");
+    
     public static readonly TelegramBotClient BotClient = new(BotClientApiToken);
     public static readonly CloudConvertAPI XlsxConvert = new(CloudConvertApiToken);
     public static readonly CancellationTokenSource Cts = new();
@@ -23,10 +24,16 @@ public static class Program
     {
         InitNLog();
 
+        GetParsedEnvironmentVariable("SCHEDULE_CHECK_TIME_START", out uint scheduleCheckTimeStart);
+        GetParsedEnvironmentVariable("SCHEDULE_CHECK_TIME_END", out uint scheduleCheckTimeEnd);
+        var scheduleCheckTimeRange = new HoursRange(scheduleCheckTimeStart, scheduleCheckTimeEnd);
+        
+        GetParsedEnvironmentVariable("TIME_BETWEEN_CHECKS_IN_MILLISECONDS", out int timeBetweenChecks);
+        
         var tasks = new[]
         {
             BotHandler.BotProcessingAsync(),
-            ScheduleFinder.ScheduleSearchAsync(new HoursRange(10, 22))
+            ScheduleFinder.ScheduleSearchAsync(scheduleCheckTimeRange, timeBetweenChecks)
         };
 
         await Task.WhenAll(tasks);

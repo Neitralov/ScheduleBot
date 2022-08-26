@@ -18,7 +18,8 @@ public static class ScheduleFinder
 
     /// <summary>Запускает механизм слежения за обновлением расписания.</summary>
     /// <param name="searchTime">Промежуток времени, в течение которого работает метод.</param>
-    public static async Task ScheduleSearchAsync(HoursRange searchTime)
+    /// <param name="timeBetweenChecksInMilliseconds">Время в миллисекундах между проверками расписаний.</param>
+    public static async Task ScheduleSearchAsync(HoursRange searchTime, int timeBetweenChecksInMilliseconds)
     {
         await CheckForCachedScheduleForAllCorps();
 
@@ -27,7 +28,7 @@ public static class ScheduleFinder
             if (searchTime == DateTime.Now.Hour)
                 await CheckScheduleAvailabilityForAllCorps();
 
-            await Task.Delay(120000);
+            await Task.Delay(timeBetweenChecksInMilliseconds);
         }
     }
 
