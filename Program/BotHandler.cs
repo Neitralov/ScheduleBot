@@ -99,11 +99,12 @@ public static class BotHandler
 
             await BotClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: $"Первый корпус: {numberOfSubscribersInCorps1} подписчиков. \n" +
-                      $"Второй корпус: {numberOfSubscribersInCorps2} подписчиков. \n" +
-                      $"Третий корпус: {numberOfSubscribersInCorps3} подписчиков. \n" +
-                      $"Четвертый корпус: {numberOfSubscribersInCorps4} подписчиков. \n\n" +
-                      $"Подписчиков всего: {numberOfSubscribers}");
+                text: $"Количество подписчиков по корпусам: \n" +
+                      $"[{numberOfSubscribersInCorps1}] - Первый корпус.\n" +
+                      $"[{numberOfSubscribersInCorps2}] - Второй корпус.\n" +
+                      $"[{numberOfSubscribersInCorps3}] - Третий корпус.\n" +
+                      $"[{numberOfSubscribersInCorps4}] - Четвертый корпус.\n\n" +
+                      $"[{numberOfSubscribers}] - Всего.");
         }
     }
 
