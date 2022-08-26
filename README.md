@@ -12,8 +12,14 @@ __Свою временную зону ищите в списке: https://en.wi
 TZ=ВВЕДИТЕ_TIMEZONE_КОД
 
 # Переменные окружения бота
+ADMIN_TELEGRAM_ID=ВВЕДИТЕ_СВОЙ_TELEGRAM_ID
 BOT_API_TOKEN=ВВЕДИТЕ_ТОКЕН_БОТА
 CLOUD_CONVERT_API_TOKEN=ВВЕДИТЕ_ТОКЕН_CLOUDCONVERT
+# Бот проверяет расписание каждый день не постоянно, а на заданном промежутке веремени (от 0 до 23 часов)
+SCHEDULE_CHECK_TIME_START=ВВЕДИТЕ_ЧАС_С_КОТОРОГО_НАЧНЕТСЯ_ПРОВЕРКА_РАСПИСАНИЯ
+SCHEDULE_CHECK_TIME_END=ВВЕДИТЕ_ЧАС_НА_КОТОРОМ_ЗАКОНЧИТСЯ_ПРОВЕРКА_РАСПИСАНИЯ
+# Между проверками есть интервал 
+TIME_BETWEEN_CHECKS_IN_MILLISECONDS=ВВЕДИТЕ_ВРЕМЯ_МЕЖДУ_ПРОВЕРКАМИ_РАСПИСАНИЯ_В_МИЛЛИСЕКУНДАХ
 
 # Переменные окружения postgreSQL
 POSTGRES_USER=admin
@@ -34,8 +40,6 @@ services:
       - .env
     volumes:
       - ./ScheduleBot/PostgresData/:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
   
   schedulebot:
     container_name: schedulebot
@@ -55,8 +59,14 @@ __Свою временную зону ищите в списке: https://en.wi
 TZ=ВВЕДИТЕ_TIMEZONE_КОД
 
 # Переменные окружения бота
+ADMIN_TELEGRAM_ID=ВВЕДИТЕ_СВОЙ_TELEGRAM_ID
 BOT_API_TOKEN=ВВЕДИТЕ_ТОКЕН_БОТА
 CLOUD_CONVERT_API_TOKEN=ВВЕДИТЕ_ТОКЕН_CLOUDCONVERT
+# Бот проверяет расписание каждый день не постоянно, а на заданном промежутке веремени (от 0 до 23 часов)
+SCHEDULE_CHECK_TIME_START=ВВЕДИТЕ_ЧАС_С_КОТОРОГО_НАЧНЕТСЯ_ПРОВЕРКА_РАСПИСАНИЯ
+SCHEDULE_CHECK_TIME_END=ВВЕДИТЕ_ЧАС_НА_КОТОРОМ_ЗАКОНЧИТСЯ_ПРОВЕРКА_РАСПИСАНИЯ
+# Между проверками есть интервал 
+TIME_BETWEEN_CHECKS_IN_MILLISECONDS=ВВЕДИТЕ_ВРЕМЯ_МЕЖДУ_ПРОВЕРКАМИ_РАСПИСАНИЯ_В_МИЛЛИСЕКУНДАХ
 
 # Переменные окружения postgreSQL
 POSTGRES_USER=admin
