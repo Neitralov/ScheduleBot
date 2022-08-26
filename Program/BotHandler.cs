@@ -1,5 +1,7 @@
 ﻿using ScheduleBot.Enums;
 using static ScheduleBot.Program;
+using static ScheduleBot.EnvironmentExtension;
+using ScheduleBot.DataBase;
 
 namespace ScheduleBot;
 
@@ -34,20 +36,6 @@ public static class BotHandler
         await ProcessCommandAsync(command, chatId);
     }
 
-    private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception,
-        CancellationToken cancellationToken)
-    {
-        var errorMessage = exception switch
-        {
-            ApiRequestException apiRequestException
-                => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-            _ => exception.ToString()
-        };
-
-        Console.WriteLine(errorMessage);
-        return Task.CompletedTask;
-    }
-
     /// <summary>Выполняет команду, которую отправили боту.</summary>
     /// <param name="command">Текст команды.</param>
     /// <param name="chatId">TelegramID с которого отправили сообщение.</param>
@@ -79,9 +67,56 @@ public static class BotHandler
             "/subscribe3" => Notifier.AddSubscriberAsync(chatId, Corps.Third),
             "/subscribe4" => Notifier.AddSubscriberAsync(chatId, Corps.Fourth),
             "/unsubscribe" => Notifier.RemoveSubscriberAsync(chatId),
+            "/status" => GetNumberOfBotSubscribers(chatId),
             _ => Task.CompletedTask
         };
 
         await task;    
+    }
+
+    /// <summary>Отправляет статистику подписок бота.</summary>
+    /// <param name="chatId">TelegramID с которого отправили сообщение.</param>
+    /// <remarks>Статистика будет отправлена только владельцу бота.</remarks>
+    private static async Task GetNumberOfBotSubscribers(long chatId)
+    {
+        GetParsedEnvironmentVariable("ADMIN_TELEGRAM_ID", out long adminId);
+
+        if (adminId != chatId)
+        {
+            await BotClient.SendTextMessageAsync(
+                chatId:chatId, 
+                text: "У вас недостаточно прав для выполнения этой команды");
+        }
+        else
+        {
+            await using var db = new DataBaseProvider();
+
+            var numberOfSubscribers = db.Subscribers.Count();
+            var numberOfSubscribersInCorps1 = db.Subscribers.Count(x => x.Corps == 1);
+            var numberOfSubscribersInCorps2 = db.Subscribers.Count(x => x.Corps == 2);
+            var numberOfSubscribersInCorps3 = db.Subscribers.Count(x => x.Corps == 3);
+            var numberOfSubscribersInCorps4 = db.Subscribers.Count(x => x.Corps == 4);
+
+            await BotClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: $"Первый корпус: {numberOfSubscribersInCorps1} подписчиков. \n" +
+                      $"Второй корпус: {numberOfSubscribersInCorps2} подписчиков. \n" +
+                      $"Третий корпус: {numberOfSubscribersInCorps3} подписчиков. \n" +
+                      $"Четвертый корпус: {numberOfSubscribersInCorps4} подписчиков. \n\n" +
+                      $"Подписчиков всего: {numberOfSubscribers}");
+        }
+    }
+
+    private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    {
+        var errorMessage = exception switch
+        {
+            ApiRequestException apiRequestException
+                => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
+            _ => exception.ToString()
+        };
+
+        Console.WriteLine(errorMessage);
+        return Task.CompletedTask;
     }
 }
