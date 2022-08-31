@@ -1,6 +1,4 @@
-﻿using static System.Environment;
-
-namespace ScheduleBot;
+﻿namespace ScheduleBot;
 
 public static class EnvironmentExtension
 {

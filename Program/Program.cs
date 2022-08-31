@@ -1,8 +1,4 @@
-﻿using ScheduleBot.Structs;
-using static System.Environment;
-using static ScheduleBot.EnvironmentExtension;
-
-namespace ScheduleBot;
+﻿namespace ScheduleBot;
 
 public static class Program
 {

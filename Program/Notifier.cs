@@ -1,8 +1,4 @@
-﻿using ScheduleBot.DataBase;
-using ScheduleBot.Enums;
-using static ScheduleBot.Program;
-
-namespace ScheduleBot;
+﻿namespace ScheduleBot;
 
 public static class Notifier
 {

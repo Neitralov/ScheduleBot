@@ -1,9 +1,4 @@
-﻿using ScheduleBot.Enums;
-using static ScheduleBot.Program;
-using static ScheduleBot.EnvironmentExtension;
-using ScheduleBot.DataBase;
-
-namespace ScheduleBot;
+﻿namespace ScheduleBot;
 
 public static class BotHandler
 {

@@ -1,10 +1,4 @@
-﻿using ScheduleBot.Enums;
-using ScheduleBot.Structs;
-using static ScheduleBot.Program;
-using static System.Environment;
-using File = System.IO.File;
-
-namespace ScheduleBot;
+﻿namespace ScheduleBot;
 
 public static class ScheduleFinder
 {
