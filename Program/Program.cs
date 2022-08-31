@@ -35,7 +35,6 @@ public static class Program
         await Task.WhenAll(tasks);
     }
 
-    /// <summary>Устанавливает настройки конфигурации для логгера.</summary>
     private static void InitNLog()
     {
         LogManager.Setup().LoadConfiguration(builder =>

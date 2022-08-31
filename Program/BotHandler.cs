@@ -2,7 +2,6 @@
 
 public static class BotHandler
 {
-    /// <summary>Запускает обработку Updates телграм-сервера для бота.</summary>
     public static async Task BotProcessingAsync()
     {
         var receiverOptions = new ReceiverOptions
@@ -31,10 +30,6 @@ public static class BotHandler
         await ProcessCommandAsync(command, chatId);
     }
 
-    /// <summary>Выполняет команду, которую отправили боту.</summary>
-    /// <param name="command">Текст команды.</param>
-    /// <param name="chatId">TelegramID с которого отправили сообщение.</param>
-    /// <remarks>При отправке несуществующей команды игнорирует её.</remarks>
     private static async Task ProcessCommandAsync(string command, long chatId)
     {
         const string startMessage = "Это бот, который отправляет расписание БГК.\n\n" +
@@ -69,9 +64,6 @@ public static class BotHandler
         await task;    
     }
 
-    /// <summary>Отправляет статистику подписок бота.</summary>
-    /// <param name="chatId">TelegramID с которого отправили сообщение.</param>
-    /// <remarks>Статистика будет отправлена только владельцу бота.</remarks>
     private static async Task GetNumberOfBotSubscribersAsync(long chatId)
     {
         GetParsedEnvironmentVariable("ADMIN_TELEGRAM_ID", out long adminId);

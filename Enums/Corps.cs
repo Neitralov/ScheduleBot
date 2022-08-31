@@ -1,6 +1,5 @@
 ﻿namespace ScheduleBot.Enums;
 
-/// <summary>Константы, определяющие номер корпуса БГК.</summary>
 public enum Corps
 {
     First = 1,

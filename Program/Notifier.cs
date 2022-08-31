@@ -2,8 +2,6 @@
 
 public static class Notifier
 {
-    /// <summary>Отправляет изображение расписания подписчикам.</summary>
-    /// <param name="corps">Корпус, подписчики которого оповещаются.</param>
     public static async Task NotifySubscribersAsync(Corps corps)
     {
         await using var db = new DataBaseProvider();
@@ -16,9 +14,6 @@ public static class Notifier
         }
     }
 
-    /// <summary>Добавляет подписчика в БД.</summary>
-    /// <param name="chatId">TelegramID подписывающегося.</param>
-    /// <param name="corps">Корпус, расписание которого хочет получать подписчик.</param>
     public static async Task AddSubscriberAsync(long chatId, Corps corps)
     {
         await using var db = new DataBaseProvider();
@@ -43,8 +38,6 @@ public static class Notifier
         }
     }
 
-    /// <summary>Удаляет подписчика из БД.</summary>
-    /// <param name="chatId">TelegramID подписчика, которого нужно отписать от обновлений.</param>
     public static async Task RemoveSubscriberAsync(long chatId)
     {
         await using var db = new DataBaseProvider();

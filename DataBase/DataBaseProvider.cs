@@ -1,7 +1,5 @@
 ﻿namespace ScheduleBot.DataBase;
 
-/// <summary>Предоставляет подключение к базе данных.</summary>
-/// <remarks>Генерирует базу данных при первом вызове в программе.</remarks>
 public sealed class DataBaseProvider : DbContext
 {
     public DbSet<Subscriber> Subscribers => Set<Subscriber>();

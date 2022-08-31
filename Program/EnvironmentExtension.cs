@@ -2,9 +2,6 @@
 
 public static class EnvironmentExtension
 {
-    /// <summary>Возвращает переменную среду в требуемом типе данных.</summary>
-    /// <param name="variableName">Название переменной окружения.</param>
-    /// <param name="environmentVariable">Результат извлечения данных переменной окружения после парсинга.</param>
     public static void GetParsedEnvironmentVariable(string variableName, out int environmentVariable)
     {
         var rawEnvironmentVariable = 
@@ -17,9 +14,6 @@ public static class EnvironmentExtension
         environmentVariable = parsedEnvironmentVariable;
     }
     
-    /// <summary>Возвращает переменную среду в требуемом типе данных.</summary>
-    /// <param name="variableName">Название переменной окружения.</param>
-    /// <param name="environmentVariable">Результат извлечения данных переменной окружения после парсинга.</param>
     public static void GetParsedEnvironmentVariable(string variableName, out uint environmentVariable)
     {
         var rawEnvironmentVariable = 
@@ -32,9 +26,6 @@ public static class EnvironmentExtension
         environmentVariable = parsedEnvironmentVariable;
     }
     
-    /// <summary>Возвращает переменную среду в требуемом типе данных.</summary>
-    /// <param name="variableName">Название переменной окружения.</param>
-    /// <param name="environmentVariable">Результат извлечения данных переменной окружения после парсинга.</param>
     public static void GetParsedEnvironmentVariable(string variableName, out long environmentVariable)
     {
         var rawEnvironmentVariable = 

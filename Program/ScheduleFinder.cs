@@ -9,10 +9,7 @@ public static class ScheduleFinder
         $"https://www.bgtc.su/wp-content/uploads/raspisanie/zamena{(int)corps}k.xlsx";
 
     private static string GetSchedulePicturePath(Corps corps) => CurrentDirectory + $"/Data/Schedule{(int)corps}.jpg";
-
-    /// <summary>Запускает механизм слежения за обновлением расписания.</summary>
-    /// <param name="searchTime">Промежуток времени, в течение которого работает метод.</param>
-    /// <param name="timeBetweenChecksInMilliseconds">Время в миллисекундах между проверками расписаний.</param>
+    
     public static async Task ScheduleSearchAsync(HoursRange searchTime, int timeBetweenChecksInMilliseconds)
     {
         await CheckForCachedScheduleForAllCorpsAsync();
@@ -25,8 +22,7 @@ public static class ScheduleFinder
             await Task.Delay(timeBetweenChecksInMilliseconds);
         }
     }
-
-    /// <summary>Проверяет наличие сохраненной копии расписания для всех корпусов.</summary>
+    
     private static async Task CheckForCachedScheduleForAllCorpsAsync()
     {
         var tasks = new[]
@@ -39,10 +35,7 @@ public static class ScheduleFinder
         
         await Task.WhenAll(tasks);
     }
-
-    /// <summary>Проверяет наличие сохраненной копии расписания.</summary>
-    /// <param name="corps">Корпус у которого проверяется кэшировнное расписание.</param>
-    /// <exception cref="Exception">Невозможно скачать файл расписания с сайта.</exception>
+    
     private static async Task CheckForCachedScheduleAsync(Corps corps)
     {
         if (File.Exists(GetOldTablePath(corps)) == false)
@@ -54,9 +47,7 @@ public static class ScheduleFinder
             await GetSchedulePictureAsync(corps);
         }
     }
-
-    /// <summary>Проверяет наличие обновления расписания для всех корпусов.</summary>
-    /// <remarks>Нельзя выполнять проверку обновления расписания, не имея копий последнего расписания для корпусов.</remarks>
+    
     private static async Task CheckScheduleAvailabilityForAllCorpsAsync()
     {
         var tasks = new[]
@@ -69,9 +60,7 @@ public static class ScheduleFinder
 
         await Task.WhenAll(tasks);
     }
-
-    /// <summary>Проверяет наличие обновления расписания.</summary>
-    /// <param name="corps">Корпус у которого проверяется обновление расписания.</param>
+    
     private static async Task ScheduleSearchAsync(Corps corps)
     {
         if (!await TryLoadScheduleAsync(corps))
@@ -84,9 +73,6 @@ public static class ScheduleFinder
         }
     }
     
-    /// <summary>Пробует скачать расписание корпуса.</summary>
-    /// <param name="corps">Корпус, раписание которого скачивается.</param>
-    /// <returns>true - раписание было скачано. false - скачать расписание не удалось.</returns>
     private static async Task<bool> TryLoadScheduleAsync(Corps corps)
     {
         Directory.CreateDirectory(CurrentDirectory + "/Data");
@@ -105,9 +91,7 @@ public static class ScheduleFinder
 
         return true;
     }
-
-    /// <summary>Проверяет является ли последнее скачанное расписание новым.</summary>
-    /// <param name="corps">Корпус, расписание которого проверяется.</param>
+    
     private static Task<bool> IsNewScheduleAsync(Corps corps)
     {
         var newTable = new FileInfo(GetNewTablePath(corps));
@@ -122,9 +106,7 @@ public static class ScheduleFinder
         File.Delete(GetNewTablePath(corps));
         return Task.FromResult(false);
     }
-
-    /// <summary>Конвертирует таблицу текущего расписания на сайте в изображение.</summary>
-    /// <param name="corps">Корпус, расписание которого конвертируется.</param>
+    
     private static async Task GetSchedulePictureAsync(Corps corps)
     {
         var job = await XlsxConvert.CreateJobAsync(new JobCreateRequest()
@@ -157,10 +139,7 @@ public static class ScheduleFinder
         await File.WriteAllBytesAsync(GetSchedulePicturePath(corps),
             await httpClient.GetByteArrayAsync(fileExport!.Url));
     }
-
-    /// <summary>Отправляет изображение расписания в чат.</summary>
-    /// <param name="chatId">TelegramID на который отправляется изображение.</param>
-    /// <param name="corps">Корпус, расписание которого отправляется.</param>
+    
     public static async Task SendSchedulePictureAsync(long chatId, Corps corps)
     {
         try

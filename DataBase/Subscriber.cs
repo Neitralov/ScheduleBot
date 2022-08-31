@@ -1,6 +1,5 @@
 namespace ScheduleBot.DataBase;
 
-/// <summary>Таблица базы данных, которая хранит подписчиков.</summary>
 public class Subscriber
 {
     public int Id { get; set; }
