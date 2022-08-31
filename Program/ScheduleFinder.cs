@@ -83,7 +83,7 @@ public static class ScheduleFinder
         if (!await TryLoadScheduleAsync(corps))
             return;
         
-        if (IsNewSchedule(corps))
+        if (await IsNewSchedule(corps))
         {
             await GetSchedulePictureAsync(corps);
             await Notifier.NotifySubscribersAsync(corps);
@@ -114,7 +114,7 @@ public static class ScheduleFinder
 
     /// <summary>Проверяет является ли последнее скачанное расписание новым.</summary>
     /// <param name="corps">Корпус, расписание которого проверяется.</param>
-    private static bool IsNewSchedule(Corps corps)
+    private static Task<bool> IsNewSchedule(Corps corps)
     {
         var newTable = new FileInfo(GetNewTablePath(corps));
         var oldTable = new FileInfo(GetOldTablePath(corps));
@@ -122,11 +122,11 @@ public static class ScheduleFinder
         if (newTable.Length != oldTable.Length)
         {
             File.Move(GetNewTablePath(corps), GetOldTablePath(corps), true);
-            return true;
+            return Task.FromResult(true);
         }
 
         File.Delete(GetNewTablePath(corps));
-        return false;
+        return Task.FromResult(false);
     }
 
     /// <summary>Конвертирует таблицу текущего расписания на сайте в изображение.</summary>
