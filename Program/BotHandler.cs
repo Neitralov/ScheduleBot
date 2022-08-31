@@ -67,7 +67,7 @@ public static class BotHandler
             "/subscribe3" => Notifier.AddSubscriberAsync(chatId, Corps.Third),
             "/subscribe4" => Notifier.AddSubscriberAsync(chatId, Corps.Fourth),
             "/unsubscribe" => Notifier.RemoveSubscriberAsync(chatId),
-            "/status" => GetNumberOfBotSubscribers(chatId),
+            "/status" => GetNumberOfBotSubscribersAsync(chatId),
             _ => Task.CompletedTask
         };
 
@@ -77,7 +77,7 @@ public static class BotHandler
     /// <summary>Отправляет статистику подписок бота.</summary>
     /// <param name="chatId">TelegramID с которого отправили сообщение.</param>
     /// <remarks>Статистика будет отправлена только владельцу бота.</remarks>
-    private static async Task GetNumberOfBotSubscribers(long chatId)
+    private static async Task GetNumberOfBotSubscribersAsync(long chatId)
     {
         GetParsedEnvironmentVariable("ADMIN_TELEGRAM_ID", out long adminId);
 

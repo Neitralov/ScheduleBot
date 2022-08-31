@@ -21,19 +21,19 @@ public static class ScheduleFinder
     /// <param name="timeBetweenChecksInMilliseconds">Время в миллисекундах между проверками расписаний.</param>
     public static async Task ScheduleSearchAsync(HoursRange searchTime, int timeBetweenChecksInMilliseconds)
     {
-        await CheckForCachedScheduleForAllCorps();
+        await CheckForCachedScheduleForAllCorpsAsync();
 
         while (true)
         {
             if (searchTime == DateTime.Now.Hour)
-                await CheckScheduleAvailabilityForAllCorps();
+                await CheckScheduleAvailabilityForAllCorpsAsync();
 
             await Task.Delay(timeBetweenChecksInMilliseconds);
         }
     }
 
     /// <summary>Проверяет наличие сохраненной копии расписания для всех корпусов.</summary>
-    private static async Task CheckForCachedScheduleForAllCorps()
+    private static async Task CheckForCachedScheduleForAllCorpsAsync()
     {
         var tasks = new[]
         {
@@ -63,7 +63,7 @@ public static class ScheduleFinder
 
     /// <summary>Проверяет наличие обновления расписания для всех корпусов.</summary>
     /// <remarks>Нельзя выполнять проверку обновления расписания, не имея копий последнего расписания для корпусов.</remarks>
-    private static async Task CheckScheduleAvailabilityForAllCorps()
+    private static async Task CheckScheduleAvailabilityForAllCorpsAsync()
     {
         var tasks = new[]
         {
