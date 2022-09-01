@@ -23,8 +23,12 @@ public static class BotHandler
             return;
 
         var chatId = message.Chat.Id;
+        
+        GetParsedEnvironmentVariable("ADMIN_TELEGRAM_ID", out long adminId);
 
-        Log.Info($"Получено сообщение '{messageText}' из чата {chatId}.");
+        Log.Info(chatId == adminId
+            ? $"Получено сообщение '{messageText}' из чата ADMIN."
+            : $"Получено сообщение '{messageText}' из чата {chatId}.");
 
         var command = messageText.Split('@')[0];
         await ProcessCommandAsync(command, chatId);
