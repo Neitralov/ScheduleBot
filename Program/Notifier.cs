@@ -16,7 +16,7 @@ public static class Notifier
             }
             catch 
             {
-                Log.Error($"Пользователь {subscriber.TelegramId} заблокировал бота.");
+                Log.Info($"Пользователь {subscriber.TelegramId} заблокировал бота. Произодится удаление.");
                 
                 var allSubscriberRecords = db.Subscribers.Where(x => x.TelegramId == subscriber.TelegramId);
                 db.Subscribers.RemoveRange(allSubscriberRecords);
