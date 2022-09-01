@@ -17,7 +17,8 @@ public static class BotHandler
         Console.ReadLine();
     }
 
-    private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
+        CancellationToken cancellationToken)
     {
         if (update.Message is not { Text: { } messageText } message)
             return;
@@ -51,18 +52,18 @@ public static class BotHandler
 
         var task = command switch
         {
-            "/start" => BotClient.SendTextMessageAsync(chatId, startMessage),
-            "/get1" => SendSchedulePictureAsync(chatId, Corps.First),
-            "/get2" => SendSchedulePictureAsync(chatId, Corps.Second),
-            "/get3" => SendSchedulePictureAsync(chatId, Corps.Third),
-            "/get4" => SendSchedulePictureAsync(chatId, Corps.Fourth),
-            "/subscribe1" => AddSubscriberAsync(chatId, Corps.First),
-            "/subscribe2" => AddSubscriberAsync(chatId, Corps.Second),
-            "/subscribe3" => AddSubscriberAsync(chatId, Corps.Third),
-            "/subscribe4" => AddSubscriberAsync(chatId, Corps.Fourth),
+            "/start"       => BotClient.SendTextMessageAsync(chatId, startMessage),
+            "/get1"        => SendSchedulePictureAsync(chatId, Corps.First),
+            "/get2"        => SendSchedulePictureAsync(chatId, Corps.Second),
+            "/get3"        => SendSchedulePictureAsync(chatId, Corps.Third),
+            "/get4"        => SendSchedulePictureAsync(chatId, Corps.Fourth),
+            "/subscribe1"  => AddSubscriberAsync(chatId, Corps.First),
+            "/subscribe2"  => AddSubscriberAsync(chatId, Corps.Second),
+            "/subscribe3"  => AddSubscriberAsync(chatId, Corps.Third),
+            "/subscribe4"  => AddSubscriberAsync(chatId, Corps.Fourth),
             "/unsubscribe" => RemoveSubscriberAsync(chatId),
-            "/status" => GetNumberOfBotSubscribersAsync(chatId),
-            _ => Task.CompletedTask
+            "/status"      => GetNumberOfBotSubscribersAsync(chatId),
+            _              => Task.CompletedTask
         };
 
         await task;    
@@ -99,7 +100,8 @@ public static class BotHandler
         }
     }
 
-    private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception,
+        CancellationToken cancellationToken)
     {
         var errorMessage = exception switch
         {
