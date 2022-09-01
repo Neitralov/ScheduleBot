@@ -5,7 +5,7 @@ public static class Notifier
     public static async Task NotifySubscribersAsync(Corps corps)
     {
         await using var db = new DataBaseProvider();
-        var subscribers = db.Subscribers.Where(x => x.Corps == (int)corps).ToList();
+        var subscribers = db.Subscribers.Where(x => x.Corps == (int)corps).ToArray();
 
         foreach (var subscriber in subscribers)
         {
