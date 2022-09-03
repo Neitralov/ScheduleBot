@@ -57,11 +57,11 @@ public static class BotHandler
             "/get2"        => SendSchedulePictureAsync(chatId, Corps.Second),
             "/get3"        => SendSchedulePictureAsync(chatId, Corps.Third),
             "/get4"        => SendSchedulePictureAsync(chatId, Corps.Fourth),
-            "/subscribe1"  => AddSubscriberAsync(chatId, Corps.First),
-            "/subscribe2"  => AddSubscriberAsync(chatId, Corps.Second),
-            "/subscribe3"  => AddSubscriberAsync(chatId, Corps.Third),
-            "/subscribe4"  => AddSubscriberAsync(chatId, Corps.Fourth),
-            "/unsubscribe" => RemoveSubscriberAsync(chatId),
+            "/subscribe1"  => SubscribeToScheduleNewsletter(chatId, Corps.First),
+            "/subscribe2"  => SubscribeToScheduleNewsletter(chatId, Corps.Second),
+            "/subscribe3"  => SubscribeToScheduleNewsletter(chatId, Corps.Third),
+            "/subscribe4"  => SubscribeToScheduleNewsletter(chatId, Corps.Fourth),
+            "/unsubscribe" => UnsubscribeToScheduleNewsletter(chatId),
             "/status"      => GetNumberOfBotSubscribersAsync(chatId),
             _              => Task.CompletedTask
         };
