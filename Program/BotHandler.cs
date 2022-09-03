@@ -1,4 +1,6 @@
-﻿namespace ScheduleBot;
+﻿using System.IO.Compression;
+
+namespace ScheduleBot;
 
 public static class BotHandler
 {
@@ -63,6 +65,7 @@ public static class BotHandler
             "/subscribe4"  => SubscribeToScheduleNewsletter(chatId, Corps.Fourth),
             "/unsubscribe" => UnsubscribeToScheduleNewsletter(chatId),
             "/status"      => GetNumberOfBotSubscribersAsync(chatId),
+            "/logs"        => GetLogsArchiveAsync(chatId),
             _              => Task.CompletedTask
         };
 
@@ -89,6 +92,27 @@ public static class BotHandler
                       $"[{numberOfSubscribersInCorps3,3}] - Третий корпус.\n" +
                       $"[{numberOfSubscribersInCorps4,3}] - Четвертый корпус.\n\n" +
                       $"[{numberOfSubscribers,3}] - Всего.");    
+        }
+        else
+        {
+            const string feedbackMessage = "У вас недостаточно прав для выполнения этой команды";
+            await BotClient.SendTextMessageAsync(chatId, feedbackMessage);
+        }
+    }
+
+    private static async Task GetLogsArchiveAsync(long chatId)
+    {
+        if (await HasAdminAccess(chatId))
+        {
+            var sourceDirectoryName = CurrentDirectory + "/Logs";
+            var destinationArchiveFileName = CurrentDirectory + "/logs.zip";
+            ZipFile.CreateFromDirectory(sourceDirectoryName, destinationArchiveFileName); 
+            
+            await using var stream = File.OpenRead(destinationArchiveFileName);
+            var inputOnlineFile = new InputOnlineFile(stream, "Logs.zip");
+            await BotClient.SendDocumentAsync(chatId, inputOnlineFile);
+            
+            File.Delete(destinationArchiveFileName);
         }
         else
         {
