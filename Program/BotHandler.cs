@@ -71,15 +71,7 @@ public static class BotHandler
 
     private static async Task GetNumberOfBotSubscribersAsync(long chatId)
     {
-        GetParsedEnvironmentVariable("ADMIN_TELEGRAM_ID", out long adminId);
-
-        if (adminId != chatId)
-        {
-            await BotClient.SendTextMessageAsync(
-                chatId:chatId, 
-                text: "У вас недостаточно прав для выполнения этой команды");
-        }
-        else
+        if (await HasAdminAccess(chatId))
         {
             await using var db = new DataBaseProvider();
 
@@ -92,12 +84,23 @@ public static class BotHandler
             await BotClient.SendTextMessageAsync(
                 chatId: chatId,
                 text: $"Количество подписчиков по корпусам: \n" +
-                      $"[{numberOfSubscribersInCorps1, 3}] - Первый корпус.\n" +
-                      $"[{numberOfSubscribersInCorps2, 3}] - Второй корпус.\n" +
-                      $"[{numberOfSubscribersInCorps3, 3}] - Третий корпус.\n" +
-                      $"[{numberOfSubscribersInCorps4, 3}] - Четвертый корпус.\n\n" +
-                      $"[{numberOfSubscribers, 3}] - Всего.");
+                      $"[{numberOfSubscribersInCorps1,3}] - Первый корпус.\n" +
+                      $"[{numberOfSubscribersInCorps2,3}] - Второй корпус.\n" +
+                      $"[{numberOfSubscribersInCorps3,3}] - Третий корпус.\n" +
+                      $"[{numberOfSubscribersInCorps4,3}] - Четвертый корпус.\n\n" +
+                      $"[{numberOfSubscribers,3}] - Всего.");    
         }
+        else
+        {
+            const string feedbackMessage = "У вас недостаточно прав для выполнения этой команды";
+            await BotClient.SendTextMessageAsync(chatId, feedbackMessage);
+        }
+    }
+
+    private static Task<bool> HasAdminAccess(long chatId)
+    {
+        GetParsedEnvironmentVariable("ADMIN_TELEGRAM_ID", out long adminId);
+        return Task.FromResult(adminId == chatId);
     }
 
     private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception,
