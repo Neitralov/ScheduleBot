@@ -68,7 +68,7 @@ public static class ScheduleFinder
         if (await IsNewScheduleAsync(corps))
         {
             await GetSchedulePictureAsync(corps);
-            await Notifier.NotifySubscribersAsync(corps);
+            await NotifySubscribersAsync(corps);
         }
     }
     

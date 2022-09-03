@@ -29,8 +29,8 @@ public static class Program
         
         var tasks = new[]
         {
-            BotHandler.BotProcessingAsync(),
-            ScheduleFinder.ScheduleSearchAsync(scheduleCheckTimeRange, timeBetweenChecks)
+            BotProcessingAsync(),
+            ScheduleSearchAsync(scheduleCheckTimeRange, timeBetweenChecks)
         };
 
         await Task.WhenAll(tasks);

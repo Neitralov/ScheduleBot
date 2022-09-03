@@ -1,6 +1,4 @@
-﻿using System.IO.Compression;
-
-namespace ScheduleBot;
+﻿namespace ScheduleBot;
 
 public static class BotHandler
 {
