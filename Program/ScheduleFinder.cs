@@ -21,32 +21,6 @@ public static class ScheduleFinder
         }
     }
     
-    public static async Task CheckForCachedScheduleForAllCorpsAsync()
-    {
-        var tasks = new[]
-        {
-            CheckForCachedScheduleAsync(Corps.First),
-            CheckForCachedScheduleAsync(Corps.Second),
-            CheckForCachedScheduleAsync(Corps.Third),
-            CheckForCachedScheduleAsync(Corps.Fourth)
-        };
-        
-        await Task.WhenAll(tasks);
-        Log.Info("Актуальное расписание было скачано или уже находится в кэше");
-    }
-    
-    private static async Task CheckForCachedScheduleAsync(Corps corps)
-    {
-        if (File.Exists(GetOldTablePath(corps)) == false)
-        {
-            if (!await TryLoadScheduleAsync(corps))
-                throw new Exception("Не удалось скачать расписание с сайта");
-            
-            File.Move(GetNewTablePath(corps), GetOldTablePath(corps));
-            await GetSchedulePictureAsync(corps);
-        }
-    }
-    
     private static async Task CheckScheduleAvailabilityForAllCorpsAsync()
     {
         var tasks = new[]
@@ -67,8 +41,34 @@ public static class ScheduleFinder
         
         if (await IsNewScheduleAsync(corps))
         {
+            Log.Info($"Обновлено расписание корпуса №{corps}. Оповещаю подписчиков.");
             await GetSchedulePictureAsync(corps);
             await NotifySubscribersAsync(corps);
+        }
+    }
+    
+    public static async Task CheckForCachedScheduleForAllCorpsAsync()
+    {
+        var tasks = new[]
+        {
+            CheckForCachedScheduleAsync(Corps.First),
+            CheckForCachedScheduleAsync(Corps.Second),
+            CheckForCachedScheduleAsync(Corps.Third),
+            CheckForCachedScheduleAsync(Corps.Fourth)
+        };
+        
+        await Task.WhenAll(tasks);
+    }
+    
+    private static async Task CheckForCachedScheduleAsync(Corps corps)
+    {
+        if (File.Exists(GetOldTablePath(corps)) == false)
+        {
+            if (!await TryLoadScheduleAsync(corps))
+                throw new Exception("Не удалось скачать расписание с сайта.");
+            
+            File.Move(GetNewTablePath(corps), GetOldTablePath(corps));
+            await GetSchedulePictureAsync(corps);
         }
     }
     
