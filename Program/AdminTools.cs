@@ -6,6 +6,7 @@ public static class AdminTools
     {
         if (await HasAdminAccess(chatId))
         {
+            Log.Info("Доступ получен");
             await using var db = new DataBaseProvider();
 
             var numberOfSubscribers = db.Subscribers.Count();
@@ -25,6 +26,7 @@ public static class AdminTools
         }
         else
         {
+            Log.Info("В доступе отказано");
             const string feedbackMessage = "У вас недостаточно прав для выполнения этой команды";
             await BotClient.SendTextMessageAsync(chatId, feedbackMessage);
         }
@@ -34,6 +36,7 @@ public static class AdminTools
     {
         if (await HasAdminAccess(chatId))
         {
+            Log.Info("Доступ получен");
             var sourceDirectoryName = CurrentDirectory + "/Logs";
             var destinationArchiveFileName = CurrentDirectory + "/logs.zip";
             ZipFile.CreateFromDirectory(sourceDirectoryName, destinationArchiveFileName); 
@@ -46,6 +49,7 @@ public static class AdminTools
         }
         else
         {
+            Log.Info("В доступе отказано");
             const string feedbackMessage = "У вас недостаточно прав для выполнения этой команды";
             await BotClient.SendTextMessageAsync(chatId, feedbackMessage);
         }
