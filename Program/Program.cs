@@ -19,7 +19,8 @@ public static class Program
     public static async Task Main()
     {
         InitNLog();
-
+        await CheckForCachedScheduleForAllCorpsAsync();
+        
         GetParsedEnvironmentVariable("SCHEDULE_CHECK_TIME_START", out uint scheduleCheckTimeStart);
         GetParsedEnvironmentVariable("SCHEDULE_CHECK_TIME_END", out uint scheduleCheckTimeEnd);
         var scheduleCheckTimeRange = new HoursRange(scheduleCheckTimeStart, scheduleCheckTimeEnd);

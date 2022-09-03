@@ -12,8 +12,6 @@ public static class ScheduleFinder
     
     public static async Task ScheduleSearchAsync(HoursRange searchTime, int timeBetweenChecksInMilliseconds)
     {
-        await CheckForCachedScheduleForAllCorpsAsync();
-
         while (true)
         {
             if (searchTime == DateTime.Now.Hour)
@@ -23,7 +21,7 @@ public static class ScheduleFinder
         }
     }
     
-    private static async Task CheckForCachedScheduleForAllCorpsAsync()
+    public static async Task CheckForCachedScheduleForAllCorpsAsync()
     {
         var tasks = new[]
         {
@@ -34,6 +32,7 @@ public static class ScheduleFinder
         };
         
         await Task.WhenAll(tasks);
+        Log.Info("Актуальное расписание было скачано или уже находится в кэше");
     }
     
     private static async Task CheckForCachedScheduleAsync(Corps corps)
@@ -142,19 +141,8 @@ public static class ScheduleFinder
     
     public static async Task SendSchedulePictureAsync(long chatId, Corps corps)
     {
-        try
-        {
-            await using var stream = File.OpenRead(GetSchedulePicturePath(corps));
-            var inputOnlineFile = new InputOnlineFile(stream, $"Schedule{(int)corps}.jpg");
-            await BotClient.SendDocumentAsync(chatId, inputOnlineFile);
-        }
-        catch
-        {
-            await BotClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: "Обработанное изображение расписания временно отсутствует.");
-
-            Log.Error("Пользователю не удалось получить изображение расписания.");
-        }
+        await using var stream = File.OpenRead(GetSchedulePicturePath(corps));
+        var inputOnlineFile = new InputOnlineFile(stream, $"Schedule{(int)corps}.jpg");
+        await BotClient.SendDocumentAsync(chatId, inputOnlineFile);
     }
 }
