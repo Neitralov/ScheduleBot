@@ -4,6 +4,7 @@ global using static ScheduleBot.Program;
 global using static ScheduleBot.BotHandler;
 global using static ScheduleBot.ScheduleFinder;
 global using static ScheduleBot.Notifier;
+global using static ScheduleBot.AdminTools;
 global using static ScheduleBot.EnvironmentExtension;
 
 global using File = System.IO.File;
