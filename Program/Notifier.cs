@@ -6,7 +6,9 @@ public static class Notifier
     {
         await using var db = new DataBaseProvider();
         var subscribers = db.Subscribers.Where(x => x.Corps == (int)corps).ToArray();
-
+        
+        var timeBeforeTask = DateTime.Now;
+        
         foreach (var subscriber in subscribers)
         {
             try
@@ -26,6 +28,10 @@ public static class Notifier
                 await RemoveSubscriberAsync(subscriber.TelegramId);
             }
         }
+        
+        var timeAfterTask = DateTime.Now;
+        var alertTime = timeAfterTask - timeBeforeTask;
+        Log.Info($"Подписчики корпуса №{corps} были оповещены за: {alertTime.TotalMilliseconds} миллисекунд.");
     }
 
     public static async Task SubscribeToScheduleNewsletter(long chatId, Corps corps)
