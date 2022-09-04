@@ -50,6 +50,9 @@ public static class BotHandler
                                     "/subscribe4 | Четвертый корпус.\n\n" +
                                     "/unsubscribe | Отписаться от всех подписок.";
 
+        const string unknownCommandMessage =
+            "Такой команды не существует. Выполните /start, чтобы получить список доступных команд";
+
         var task = command switch
         {
             "/start"       => BotClient.SendTextMessageAsync(chatId, startMessage),
@@ -64,7 +67,7 @@ public static class BotHandler
             "/unsubscribe" => UnsubscribeToScheduleNewsletter(chatId),
             "/statistics"      => GetNumberOfBotSubscribersAsync(chatId),
             "/logs"        => GetLogsArchiveAsync(chatId),
-            _              => Task.CompletedTask
+            _              => BotClient.SendTextMessageAsync(chatId, unknownCommandMessage)
         };
 
         await task;    
