@@ -51,7 +51,7 @@ public static class BotHandler
                                     "/unsubscribe | Отписаться от всех подписок.";
 
         const string unknownCommandMessage =
-            "Такой команды не существует. Выполните /start, чтобы получить список доступных команд";
+            "Такой команды не существует. Выполните /start, чтобы получить список доступных команд.";
 
         var task = command switch
         {
