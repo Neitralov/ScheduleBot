@@ -83,7 +83,7 @@ public static class BotHandler
             _ => exception.ToString()
         };
 
-        Console.WriteLine(errorMessage);
+        Log.Info(errorMessage);
         return Task.CompletedTask;
     }
 }
