@@ -21,8 +21,8 @@ public static class Program
         InitNLog();
         await CheckForCachedScheduleForAllCorpsAsync();
         
-        GetParsedEnvironmentVariable("SCHEDULE_CHECK_TIME_START", out uint scheduleCheckTimeStart);
-        GetParsedEnvironmentVariable("SCHEDULE_CHECK_TIME_END", out uint scheduleCheckTimeEnd);
+        GetParsedEnvironmentVariable("SCHEDULE_CHECK_TIME_START", out int scheduleCheckTimeStart);
+        GetParsedEnvironmentVariable("SCHEDULE_CHECK_TIME_END", out int scheduleCheckTimeEnd);
         var scheduleCheckTimeRange = new HoursRange(scheduleCheckTimeStart, scheduleCheckTimeEnd);
         
         GetParsedEnvironmentVariable("TIME_BETWEEN_CHECKS_IN_MILLISECONDS", out int timeBetweenChecks);

@@ -2,21 +2,19 @@
 
 public readonly struct HoursRange
 {
-    private readonly uint _start;
-    private readonly uint _end;
+    private readonly int _start;
+    private readonly int _end;
     
-    public HoursRange(uint start, uint end)
+    public HoursRange(int start, int end)
     {
-        _start = start <= 23
-            ? start
-            : throw new ArgumentException("Параметр start не может быть большее 23");
-
-        _end = end <= 23 
-            ? end
-            : throw new ArgumentException("Параметр end не может быть большее 23");
+        if (start is < 0 or > 23)
+            throw new ArgumentException("Параметр start не может быть большее 23 или меньше 0");
         
-        if (start > end)
-            throw new ArgumentException("Параметр start не может быть больше параметра end");
+        if (end is < 0 or > 23)
+            throw new ArgumentException("Параметр end не может быть большее 23 или меньше 0");
+        
+        _start = start;
+        _end = end;
     }
 
     private bool Equals(HoursRange other)
@@ -34,9 +32,31 @@ public readonly struct HoursRange
         return HashCode.Combine(_start, _end);
     }
 
-    public static bool operator ==(HoursRange a, int b) => (b >= a._start) && (b <= a._end);
-    public static bool operator !=(HoursRange a, int b) => !(b >= a._start) || !(b <= a._end);
+    public static bool operator ==(HoursRange range, int hour)
+    {
+        return range._start <= range._end
+            ? ((hour >= range._start) && (hour <= range._end))
+            : ((hour >= range._start) || (hour <= range._end));  
+    }
 
-    public static bool operator ==(int b, HoursRange a) => (b >= a._start) && (b <= a._end);
-    public static bool operator !=(int b, HoursRange a) => !(b >= a._start) || !(b <= a._end);
+    public static bool operator !=(HoursRange range, int hour)
+    {
+        return range._start <= range._end
+            ? !(((hour >= range._start) && (hour <= range._end)))
+            : !(((hour >= range._start) || (hour <= range._end)));  
+    }
+
+    public static bool operator ==(int hour, HoursRange range)
+    {
+        return range._start <= range._end
+            ? ((hour >= range._start) && (hour <= range._end))
+            : ((hour >= range._start) || (hour <= range._end));
+    }
+
+    public static bool operator !=(int hour, HoursRange range)
+    {
+        return range._start <= range._end
+            ? !(((hour >= range._start) && (hour <= range._end)))
+            : !(((hour >= range._start) || (hour <= range._end)));
+    }
 }
