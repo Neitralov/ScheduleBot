@@ -65,7 +65,7 @@ public static class BotHandler
             "/subscribe3"  => SubscribeToScheduleNewsletter(chatId, Corps.Third),
             "/subscribe4"  => SubscribeToScheduleNewsletter(chatId, Corps.Fourth),
             "/unsubscribe" => UnsubscribeToScheduleNewsletter(chatId),
-            "/statistics"      => GetNumberOfBotSubscribersAsync(chatId),
+            "/statistics"  => GetNumberOfBotSubscribersAsync(chatId),
             "/logs"        => GetLogsArchiveAsync(chatId),
             _              => BotClient.SendTextMessageAsync(chatId, unknownCommandMessage)
         };
