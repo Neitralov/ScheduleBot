@@ -31,7 +31,7 @@ public static class Notifier
     {
         await using var db = new DataBaseProvider();
         var isThereSameSubscriber =
-            db.Subscribers.FirstOrDefault(x => x.TelegramId == chatId && x.Corps == (int)corps) != null;
+            db.Subscribers.FirstOrDefault(x => (x.TelegramId == chatId) && (x.Corps == (int)corps)) != null;
 
         if (isThereSameSubscriber)
         {
