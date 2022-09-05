@@ -13,14 +13,7 @@ public static class Notifier
         {
             try
             {
-                var tasks = new[]
-                {
-                    // Ограничение телеграм: не более 30 сообщений в секунду
-                    Task.Delay(35),
-                    SendSchedulePictureAsync(subscriber.TelegramId, corps)
-                };
-
-                await Task.WhenAll(tasks);
+                await SendSchedulePictureAsync(subscriber.TelegramId, corps);
             }
             catch
             {
