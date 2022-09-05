@@ -31,7 +31,7 @@ public static class Notifier
         
         var timeAfterTask = DateTime.Now;
         var alertTime = timeAfterTask - timeBeforeTask;
-        Log.Info($"Подписчики корпуса №{corps} были оповещены за: {alertTime.TotalMilliseconds} миллисекунд.");
+        Log.Info($"Подписчики корпуса №{(int)corps} были оповещены за: {alertTime.TotalMilliseconds} миллисекунд.");
     }
 
     public static async Task SubscribeToScheduleNewsletter(long chatId, Corps corps)
