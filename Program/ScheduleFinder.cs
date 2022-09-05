@@ -41,7 +41,7 @@ public static class ScheduleFinder
         
         if (await IsNewScheduleAsync(corps))
         {
-            Log.Info($"Обновлено расписание корпуса №{corps}. Оповещаю подписчиков.");
+            Log.Info($"Обновлено расписание корпуса №{(int)corps}. Оповещаю подписчиков.");
             await GetSchedulePictureAsync(corps);
             await NotifySubscribersAsync(corps);
         }
