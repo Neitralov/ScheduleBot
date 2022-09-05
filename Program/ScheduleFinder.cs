@@ -142,7 +142,7 @@ public static class ScheduleFinder
     public static async Task SendSchedulePictureAsync(long chatId, Corps corps)
     {
         await using var stream = File.OpenRead(GetSchedulePicturePath(corps));
-        var inputOnlineFile = new InputOnlineFile(stream, $"Schedule{(int)corps}.jpg");
+        var inputOnlineFile = new InputOnlineFile(stream, $"Расписание корпуса #{(int)corps}.jpg");
         await BotClient.SendDocumentAsync(chatId, inputOnlineFile);
     }
 }
