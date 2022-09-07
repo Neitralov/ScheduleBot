@@ -17,46 +17,37 @@ public readonly struct HoursRange
         _end = end;
     }
 
-    private bool Equals(HoursRange other)
-    {
-        return _start == other._start && _end == other._end;
-    }
+    private bool Equals(HoursRange other) => (_start == other._start) && (_end == other._end);
 
-    public override bool Equals(object? obj)
-    {
-        return obj is HoursRange other && Equals(other);
-    }
+    public override bool Equals(object? obj) => obj is HoursRange other && Equals(other);
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_start, _end);
-    }
+    public override int GetHashCode() => HashCode.Combine(_start, _end);
 
     public static bool operator ==(HoursRange range, int hour)
     {
         return range._start <= range._end
-            ? ((hour >= range._start) && (hour <= range._end))
-            : ((hour >= range._start) || (hour <= range._end));  
+            ? (hour >= range._start) && (hour <= range._end)
+            : (hour >= range._start) || (hour <= range._end);  
     }
 
     public static bool operator !=(HoursRange range, int hour)
     {
         return range._start <= range._end
-            ? !(((hour >= range._start) && (hour <= range._end)))
-            : !(((hour >= range._start) || (hour <= range._end)));  
+            ? !((hour >= range._start) && (hour <= range._end))
+            : !((hour >= range._start) || (hour <= range._end));  
     }
 
     public static bool operator ==(int hour, HoursRange range)
     {
         return range._start <= range._end
-            ? ((hour >= range._start) && (hour <= range._end))
-            : ((hour >= range._start) || (hour <= range._end));
+            ? (hour >= range._start) && (hour <= range._end)
+            : (hour >= range._start) || (hour <= range._end);
     }
 
     public static bool operator !=(int hour, HoursRange range)
     {
         return range._start <= range._end
-            ? !(((hour >= range._start) && (hour <= range._end)))
-            : !(((hour >= range._start) || (hour <= range._end)));
+            ? !((hour >= range._start) && (hour <= range._end))
+            : !((hour >= range._start) || (hour <= range._end));
     }
 }
