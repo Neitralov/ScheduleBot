@@ -7,13 +7,16 @@ public static class Notifier
         await using var db = new DataBaseProvider();
         var subscribers = db.Subscribers.Where(x => x.Corps == (int)corps).ToArray();
         
+        var tasks = new List<Task>();
+        
         var timeBeforeTask = DateTime.Now;
         
         foreach (var subscriber in subscribers)
         {
             try
             {
-                await SendSchedulePictureAsync(subscriber.TelegramId, corps);
+                tasks.Add(SendSchedulePictureAsync(subscriber.TelegramId, corps));
+                await Task.Delay(35); // Ограничение телеграма: не более 30 сообщений в секунду.
             }
             catch
             {
@@ -21,6 +24,8 @@ public static class Notifier
                 await RemoveSubscriberAsync(subscriber.TelegramId);
             }
         }
+
+        await Task.WhenAll(tasks);
         
         var timeAfterTask = DateTime.Now;
         var alertTime = timeAfterTask - timeBeforeTask;
