@@ -9,8 +9,6 @@ public static class Notifier
         
         var tasks = new List<Task>();
         
-        var timeBeforeTask = DateTime.Now;
-        
         foreach (var subscriber in subscribers)
         {
             try
@@ -27,9 +25,7 @@ public static class Notifier
 
         await Task.WhenAll(tasks);
         
-        var timeAfterTask = DateTime.Now;
-        var alertTime = timeAfterTask - timeBeforeTask;
-        Log.Info($"Подписчики корпуса №{(int)corps} были оповещены за: {alertTime.TotalMilliseconds:F0} миллисекунд.");
+        Log.Info($"Подписчики корпуса №{(int)corps} были оповещены.");
     }
 
     public static async Task SubscribeToScheduleNewsletter(long chatId, Corps corps)
