@@ -143,6 +143,15 @@ public static class ScheduleFinder
     {
         await using var stream = File.OpenRead(GetSchedulePicturePath(corps));
         var inputOnlineFile = new InputOnlineFile(stream, $"Расписание корпуса #{(int)corps}.jpg");
-        await BotClient.SendDocumentAsync(chatId, inputOnlineFile);
+
+        try
+        {
+            await BotClient.SendDocumentAsync(chatId, inputOnlineFile);
+        }
+        catch (ApiRequestException e)
+        {
+            await RemoveSubscriberAsync(chatId);
+            Log.Info($"Пользователь {chatId} заблокировал бота. Производится удаление.");
+        }
     }
 }

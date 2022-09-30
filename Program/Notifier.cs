@@ -6,23 +6,15 @@ public static class Notifier
     {
         await using var db = new DataBaseProvider();
         var subscribers = db.Subscribers.Where(x => x.Corps == (int)corps).ToArray();
-        
+
         var tasks = new List<Task>();
         
         foreach (var subscriber in subscribers)
         {
-            try
-            {
-                tasks.Add(SendSchedulePictureAsync(subscriber.TelegramId, corps));
-                await Task.Delay(35); // Ограничение телеграма: не более 30 сообщений в секунду.
-            }
-            catch
-            {
-                Log.Info($"Пользователь {subscriber.TelegramId} заблокировал бота. Произодится удаление.");
-                await RemoveSubscriberAsync(subscriber.TelegramId);
-            }
+            tasks.Add(SendSchedulePictureAsync(subscriber.TelegramId, corps));
+            await Task.Delay(35); // Ограничение телеграма: не более 30 сообщений в секунду.        
         }
-
+        
         await Task.WhenAll(tasks);
         
         Log.Info($"Подписчики корпуса №{(int)corps} были оповещены.");
@@ -85,7 +77,7 @@ public static class Notifier
         }
     }
 
-    private static async Task RemoveSubscriberAsync(long chatId)
+    public static async Task RemoveSubscriberAsync(long chatId)
     {
         await using var db = new DataBaseProvider();
         var allSubscriberRecords = db.Subscribers.Where(x => x.TelegramId == chatId);
