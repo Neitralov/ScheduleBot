@@ -20,11 +20,6 @@ SCHEDULE_CHECK_TIME_START=ВВЕДИТЕ_ЧАС_С_КОТОРОГО_НАЧНЕТ
 SCHEDULE_CHECK_TIME_END=ВВЕДИТЕ_ЧАС_НА_КОТОРОМ_ЗАКОНЧИТСЯ_ПРОВЕРКА_РАСПИСАНИЯ
 # Между проверками есть интервал 
 TIME_BETWEEN_CHECKS_IN_MILLISECONDS=ВВЕДИТЕ_ВРЕМЯ_МЕЖДУ_ПРОВЕРКАМИ_РАСПИСАНИЯ_В_МИЛЛИСЕКУНДАХ
-
-# Переменные окружения postgreSQL
-POSTGRES_USER=admin
-POSTGRES_PASSWORD=admin
-POSTGRES_DB=ScheduleBotDB
 ```
 3. В терминале из папки проекта выполняем команду `Docker compose run --build`.
 
@@ -33,14 +28,6 @@ POSTGRES_DB=ScheduleBotDB
 2. Создаем файл `docker-compose.yaml` с содержимым:
 ```
 services:
-  db:
-    container_name: db
-    image: postgres:14.4
-    env_file:
-      - .env
-    volumes:
-      - ./ScheduleBot/PostgresData/:/var/lib/postgresql/data
-  
   schedulebot:
     container_name: schedulebot
     image: neitralov/schedulebot
@@ -67,17 +54,12 @@ SCHEDULE_CHECK_TIME_START=ВВЕДИТЕ_ЧАС_С_КОТОРОГО_НАЧНЕТ
 SCHEDULE_CHECK_TIME_END=ВВЕДИТЕ_ЧАС_НА_КОТОРОМ_ЗАКОНЧИТСЯ_ПРОВЕРКА_РАСПИСАНИЯ
 # Между проверками есть интервал 
 TIME_BETWEEN_CHECKS_IN_MILLISECONDS=ВВЕДИТЕ_ВРЕМЯ_МЕЖДУ_ПРОВЕРКАМИ_РАСПИСАНИЯ_В_МИЛЛИСЕКУНДАХ
-
-# Переменные окружения postgreSQL
-POSTGRES_USER=admin
-POSTGRES_PASSWORD=admin
-POSTGRES_DB=ScheduleBotDB
 ```
 4. Выполняем команду `docker compose run -d`.
 
 ## Используемые прямые зависимости
-- Microsoft.EntityFrameworkCore 6.0.7
-- Npgsql.EntityFrameworkCore.PostgreSQL 6.0.5
+- Microsoft.EntityFrameworkCore 6.0.13
+- Microsoft.EntityFrameworkCore.Sqlite 6.0.13
 - CloudConvert.API 1.1.1
 - NLog 5.0.1
 - Telegram.Bot 18.0.0
